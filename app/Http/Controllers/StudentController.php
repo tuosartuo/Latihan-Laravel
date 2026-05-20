@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\student;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -16,7 +16,7 @@ class StudentController extends Controller
     return view('student.index', [
         'title' => 'student',
         'students'=> student::latest()-> get(),
-       // 'students'=> student::latest()-> get(),
+        //'students'=> student::orderBy('name','asc')-> get(),
         ]); 
     }
 

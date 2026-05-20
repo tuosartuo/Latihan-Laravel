@@ -9,15 +9,15 @@
     @endsession
 
 
-    <a class="btn btn-primary mb-3" href ="{{ route('student.create') }}" role="button">create</a>
+    <a class="btn btn-primary mb-3" href ="{{ route('lecturer.create') }}" role="button">create</a>
 
     <ul class="list-group">
 
-        @foreach ($students as $student)
+        @foreach ($lecturers as $lecturer)
             <li class="list-group-item">
-                {{ $loop->iteration }}.{{ $student->name }}
-                <a class="btn btn-warning btn-sm " href ="{{ route('student.edit', $student) }}" role="button">edit</a>
-                <form action="{{ route('student.destroy', $student) }}" method="post" class="d-inline">
+                {{ $loop->iteration }}. {{ $lecturer->name }} -- {{ $lecturer->department->name }}
+                <a class="btn btn-warning btn-sm " href ="{{ route('lecturer.edit', $lecturer) }}" role="button">edit</a>
+                <form action="{{ route('lecturer.destroy', $lecturer) }}" method="post" class="d-inline">
                     @method('DELETE')
                     @csrf
 
