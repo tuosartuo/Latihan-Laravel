@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Lecturer;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,11 @@ class LecturerController extends Controller
      */
     public function create()
     {
-        //
+         return view('Lecturer.create', [
+        'title' => 'create Lecturer',
+        'departments'=> Department::latest()-> get(),
+        
+        ]); 
     }
 
     /**
@@ -32,7 +37,18 @@ class LecturerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $validated = $request->validate([
+    'name' => 'required|max:255',
+    'department_id' => 'required|exists:departments,id',
+], [
+    'name.required' => 'nama tidak boleh kosong',
+    'name.max' => 'nama tidak boleh lebih dari :max karakter',
+    'department_id.required' => 'program studi tidak boleh kosong',
+    'department_id.exists' => 'program studi yang dipilih tidak ditemukan',
+]);
+ 
+    lecturer::create($validated);
+    return to_route('lecturer.index')->withsuccess('Data berhasil ditambahkan');
     }
 
     /**
@@ -48,7 +64,12 @@ class LecturerController extends Controller
      */
     public function edit(lecturer $lecturer)
     {
-        //
+       return view('Lecturer.edit', [
+        'title' => 'edit Lecturer',
+        'departments'=> Department::latest()-> get(),
+        'lecturer' => $lecturer,
+        
+        ]); 
     }
 
     /**
@@ -56,7 +77,18 @@ class LecturerController extends Controller
      */
     public function update(Request $request, lecturer $lecturer)
     {
-        //
+           $validated = $request->validate([
+    'name' => 'required|max:255',
+    'department_id' => 'required|exists:departments,id',
+], [
+    'name.required' => 'nama tidak boleh kosong',
+    'name.max' => 'nama tidak boleh lebih dari :max karakter',
+    'department_id.required' => 'program studi tidak boleh kosong',
+    'department_id.exists' => 'program studi yang dipilih tidak ditemukan',
+]);
+ 
+    $lecturer->update($validated);
+    return to_route('lecturer.index')->withsuccess('Data berhasil diubah');
     }
 
     /**
@@ -64,6 +96,7 @@ class LecturerController extends Controller
      */
     public function destroy(lecturer $lecturer)
     {
-        //
+        $lecturer->delete($lecturer);
+    return to_route('lecturer.index')->withsuccess('Data berhasil dihapus');
     }
 }
