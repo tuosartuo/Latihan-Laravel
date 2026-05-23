@@ -11,12 +11,40 @@
 
     <a class="btn btn-primary mb-3" href ="{{ route('lecturer.create') }}" role="button">create</a>
 
+    <form action="">
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-4">
+                <input type="text" class="form-control" id="keyword" name="keyword"
+                    placeholder="seacrh lecturer name..." value="{{ request('keyword') }}">
+            </div>
+            <div class="col-md-4">
+                <select class="form-select" id="department_id" name="department_id">
+                    <option value="">all Department</option>
+
+                    @foreach ($departments as $department)
+                        <option value="{{ $department->id }}"
+                            {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                            {{ $department->name }}
+                        </option>
+                    @endforeach
+
+                </select>
+
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-success">search</button>
+            </div>
+        </div>
+    </form>
+
     <ul class="list-group">
 
         @foreach ($lecturers as $lecturer)
             <li class="list-group-item">
-                {{ $loop->iteration }}. {{ $lecturer->name }} -- {{ $lecturer->department->name }}
-                <a class="btn btn-warning btn-sm " href ="{{ route('lecturer.edit', $lecturer) }}" role="button">edit</a>
+                {{ $lecturers->firstitem() + $loop->index }}. {{ $lecturer->name }} -- {{ $lecturer->department->name }}
+                <a class="btn btn-warning btn-sm " href ="{{ route('lecturer.edit', $lecturer) }}"
+                    role="button">edit</a>
                 <form action="{{ route('lecturer.destroy', $lecturer) }}" method="post" class="d-inline">
                     @method('DELETE')
                     @csrf
@@ -30,5 +58,7 @@
             </li>
         @endforeach
     </ul>
+
+    {{ $lecturers->links() }}
 
 </x-app>

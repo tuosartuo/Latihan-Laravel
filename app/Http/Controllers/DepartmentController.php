@@ -40,7 +40,11 @@ class DepartmentController extends Controller
      */
     public function show(Department $department)
     {
-        //
+        return view('department.show', [
+        'title' => 'Detail department' . $department->name,
+        'department'=> $department,
+        
+        ]); 
     }
 
     /**
